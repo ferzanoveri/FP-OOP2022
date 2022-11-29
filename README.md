@@ -1,2 +1,2 @@
 # FP-OOP2022
-Membuat game sederhana 
+Membuat game sederhana dengan menggunakan JavaFX
