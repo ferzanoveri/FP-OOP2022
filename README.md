@@ -1,2 +1,2 @@
 # FP-OOP2022
-Membuat calculator sederhana dengan menggunakan JavaFX
+Membuat game ular sederhana dengan menggunakan JavaFX
