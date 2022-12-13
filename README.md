@@ -97,6 +97,7 @@ try{
 ```
 
 ### 10. GUI
+<img width="597" alt="Screenshot 2022-12-13 at 15 33 59" src="https://user-images.githubusercontent.com/110340182/207265871-a3dea90e-f4da-4a72-a5ec-d7539c97dd92.png">
 
 ### 11. Interface
 
