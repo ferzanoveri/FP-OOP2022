@@ -6,33 +6,37 @@ package snakegame;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.swing.*;
 import java.util.Random;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
  *
  * @author ferzanoveri
  */
-public class GamePanel extends JPanel implements ActionListener{
+public class GamePanel extends JPanel implements ActionListener, GameInterface{
     
-    static final int SCREEN_WIDTH = 600;
-    static final int SCREEN_HEIGHT = 600;
-    static final int UNIT_SIZE = 25;
-    static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
-    static final int DELAY = 75;
     final int x[] = new int[GAME_UNITS];
     final int y[] = new int[GAME_UNITS];
     int bodyParts = 3;
-    int applesEaten;
+    private int applesEaten;
     int appleX;
     int appleY;
     char direction = 'R';
     boolean running = false;
     Timer timer;
     Random random;
+    
 
+//    Constructor
     GamePanel(){
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -50,9 +54,13 @@ public class GamePanel extends JPanel implements ActionListener{
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        draw(g);
+        try {
+            draw(g);
+        } catch (IOException ex) {
+            Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    public void draw(Graphics g){
+    public void draw(Graphics g) throws IOException{
         
         if(running){
             /*
@@ -73,10 +81,10 @@ public class GamePanel extends JPanel implements ActionListener{
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
             }
-            g.setColor(Color.red);
-            g.setFont(new Font("Ink Free", Font.BOLD, 40));
-            FontMetrics metrics = getFontMetrics(g.getFont());
-            g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
+//            g.setColor(Color.red);
+//            g.setFont(new Font("Ink Free", Font.BOLD, 40));
+//            FontMetrics metrics = getFontMetrics(g.getFont());
+//            g.drawString("Score: "+getApplesEaten(), (SCREEN_WIDTH - metrics.stringWidth("Score: "+getApplesEaten()))/2, g.getFont().getSize());
         }else{
             gameOver(g);
         }
@@ -109,9 +117,10 @@ public class GamePanel extends JPanel implements ActionListener{
     public void checkApple(){
         if((x[0] == appleX) && (y[0] == appleY)){
             bodyParts++;
-            applesEaten++;
+            setApplesEaten(getApplesEaten() + 1);
             newApple();
         }
+
     }
     public void checkCollisions(){
 //        checks if head collides with body
@@ -141,18 +150,57 @@ public class GamePanel extends JPanel implements ActionListener{
             timer.stop();
         }
     }
-    public void gameOver(Graphics g){
+    public void gameOver(Graphics g) throws IOException{
 //        Score Text
         g.setColor(Color.red);
         g.setFont(new Font("Ink Free", Font.BOLD, 40));
         FontMetrics metrics1 = getFontMetrics(g.getFont());
-        g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
+        g.drawString("Score: "+getApplesEaten(), (SCREEN_WIDTH - metrics1.stringWidth("Score: "+getApplesEaten()))/2, g.getFont().getSize());
 //        Game Over text
         g.setColor(Color.red);
         g.setFont(new Font("Ink Free", Font.BOLD, 75));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over"))/2, SCREEN_HEIGHT/2);
+//        Restart text
+        g.setColor(Color.red);
+        g.setFont(new Font("Ink Free", Font.BOLD, 20));
+        FontMetrics metrics3 = getFontMetrics(g.getFont());
+        g.drawString("Press space to restart", (SCREEN_WIDTH - metrics3.stringWidth("Press space to restart"))/2, SCREEN_HEIGHT/2+50);
+             
+        
+//        Exception Handling
+            try{
+            // Input & Output
+        File file = new File("highscore.txt");
+        
+        file.createNewFile();
+        
+        PrintWriter pw = new PrintWriter(file);   
+	                        
+        pw.println(applesEaten);
+
+        pw.close();
+        } catch(IOException e){
+                e.printStackTrace();
+            }
     }
+    
+    public void restart(){
+        if (!running) {
+            setVisible(false);
+            new GameFrame();
+        }
+    }
+    
+//    public String showHighScore () throws IOException{
+//     
+//     BufferedReader reader = new BufferedReader(new FileReader("highscore.txt"));
+//     String currentLine = reader.readLine();
+//     reader.close();
+//    
+//    return currentLine;
+//    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         
@@ -188,8 +236,25 @@ public class GamePanel extends JPanel implements ActionListener{
                         direction = 'D';
                     }
                     break;
+                case KeyEvent.VK_SPACE:
+                    restart();  
+                    break;
             }
         }
+    }
+
+    /**
+     * @return the applesEaten
+     */
+    public int getApplesEaten() {
+        return applesEaten;
+    }
+
+    /**
+     * @param applesEaten the applesEaten to set
+     */
+    public void setApplesEaten(int applesEaten) {
+        this.applesEaten = applesEaten;
     }
     
 }
