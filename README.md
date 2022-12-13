@@ -31,7 +31,6 @@ Implementasi
 ### 9. Exception Handling
 
 ### 10. GUI
-![image](https://user-images.githubusercontent.com/88433109/207233204-099e20a3-ce78-421a-99d7-ce2c33bb7227.png)
 
 ### 11. Interface
 
