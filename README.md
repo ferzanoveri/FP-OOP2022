@@ -54,10 +54,9 @@ GamePanel(){
 
 ### 6. Inheritance
 
-public class GameFrame extends JFrame{
-
 >GameFrame.java
 ```java
+public class GameFrame extends JFrame{
     GameFrame(){
         
         this.add(new GamePanel());
