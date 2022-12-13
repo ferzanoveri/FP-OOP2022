@@ -10,7 +10,7 @@ Implementasi
 -----
 
 ### 1. Casting/Conversion
-
+java
 static final int GAME_UNITS = (int) ((double)(SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE);
 
 
