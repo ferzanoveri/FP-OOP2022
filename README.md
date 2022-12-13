@@ -6,6 +6,8 @@ NRP   : 5025211097
 
 Kelas : Pemrograman Berorientasi Objek B
 
+Referensi : https://youtu.be/bI6e6qjJ8JQ
+
 Implementasi
 -----
 
